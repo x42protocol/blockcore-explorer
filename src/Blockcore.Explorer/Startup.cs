@@ -34,9 +34,11 @@ namespace Blockcore.Explorer
       {
          services.Configure<ChainSettings>(Configuration.GetSection("Chain"));
          services.Configure<ExplorerSettings>(Configuration.GetSection("Explorer"));
+         services.Configure<NetworkSettings>(Configuration.GetSection("Network"));
 
          services.AddSingleton<BlockIndexService>();
          services.AddSingleton<TickerService>();
+         services.AddSingleton<WeightService>();
          services.AddSingleton<CurrencyService>();
          services.AddHostedService<DataUpdateService>();
 

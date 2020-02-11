@@ -14,20 +14,24 @@ namespace Blockcore.Explorer.Services
       private readonly ILogger<DataUpdateService> log;
       private readonly BlockIndexService blockIndexService;
       private readonly TickerService tickerService;
+      private readonly WeightService weightService;
       private readonly IMemoryCache memoryCache;
       private readonly ExplorerSettings settings;
       private System.Timers.Timer indexerTimer;
       private System.Timers.Timer tickerTimer;
+      private System.Timers.Timer weightTimer;
 
       public DataUpdateService(
          ILogger<DataUpdateService> log,
           BlockIndexService blockIndexService,
           TickerService tickerService,
+          WeightService weightService,
           IMemoryCache memoryCache,
           IOptions<ExplorerSettings> settings)
       {
          this.log = log;
          this.tickerService = tickerService;
+         this.weightService = weightService;
          this.blockIndexService = blockIndexService;
          this.memoryCache = memoryCache;
          this.settings = settings.Value;
@@ -58,6 +62,19 @@ namespace Blockcore.Explorer.Services
             catch (Exception ex)
             {
                log.LogCritical(ex, "Failed to start ticker timer.");
+            }
+         }
+
+         if (settings.Features.POSWeight)
+         {
+            try
+            {
+               weightTimer = new System.Timers.Timer();
+               StartWeightTimer();
+            }
+            catch (Exception ex)
+            {
+               log.LogCritical(ex, "Failed to start POS weight timer.");
             }
          }
 
@@ -117,6 +134,32 @@ namespace Blockcore.Explorer.Services
          tickerTimer.Start();
       }
 
+      private void StartWeightTimer()
+      {
+         weightTimer.AutoReset = false; // Make sure it only trigger once initially.
+
+         weightTimer.Elapsed += (sender, args) =>
+         {
+            if (weightTimer.AutoReset == false)
+            {
+               weightTimer.Interval = TimeSpan.FromMinutes(1).TotalMilliseconds;
+               weightTimer.AutoReset = true;
+            }
+
+            try
+            {
+               // Get staking info and cache it.
+               memoryCache.Set("StakingInfo", weightService.DownloadStakingInfo());
+            }
+            catch (Exception ex)
+            {
+               log.LogError(ex, "Failed to set staking info.");
+            }
+         };
+
+         weightTimer.Start();
+      }
+
       public Task StopAsync(CancellationToken cancellationToken)
       {
          return Task.CompletedTask;
@@ -129,6 +172,9 @@ namespace Blockcore.Explorer.Services
 
          tickerTimer?.Stop();
          tickerTimer?.Dispose();
+
+         weightTimer?.Stop();
+         weightTimer?.Dispose();
       }
    }
 }

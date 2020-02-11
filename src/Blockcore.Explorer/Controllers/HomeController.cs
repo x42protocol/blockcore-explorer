@@ -16,6 +16,7 @@ namespace Blockcore.Explorer.Controllers
    {
       private readonly IMemoryCache memoryCache;
       private readonly TickerService tickerService;
+      private readonly WeightService weightService;
       private readonly CurrencyService currencyService;
       private readonly ExplorerSettings settings;
       private readonly ChainSettings chainSettings;
@@ -24,6 +25,7 @@ namespace Blockcore.Explorer.Controllers
       public HomeController(IMemoryCache memoryCache,
           ILogger<HomeController> log,
           TickerService tickerService,
+          WeightService weightService,
           CurrencyService currencyService,
           IOptions<ExplorerSettings> settings,
           IOptions<ChainSettings> chainSettings)
@@ -33,6 +35,7 @@ namespace Blockcore.Explorer.Controllers
          this.settings = settings.Value;
          this.chainSettings = chainSettings.Value;
          this.tickerService = tickerService;
+         this.weightService = weightService;
          this.currencyService = currencyService;
       }
 
@@ -47,7 +50,14 @@ namespace Blockcore.Explorer.Controllers
          ViewBag.Setup = settings.Setup;
          ViewBag.Chain = chainSettings;
          ViewBag.Ticker = settings.Ticker;
+         
          ViewBag.Url = Request.Host.ToString();
+
+         if (settings.Features.POSWeight)
+         {
+            string networkWeight = weightService.GetNetworkWeight();
+            ViewBag.NetworkWeight = networkWeight;
+         }
 
          if (settings.Features.Ticker)
          {

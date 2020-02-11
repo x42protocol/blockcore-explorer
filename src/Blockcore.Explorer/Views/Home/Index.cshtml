@@ -26,6 +26,14 @@
                   </h1>
                }
 
+               @if (ViewBag.Features.POSWeight)
+               {
+                  <h1 class="m-0">Current network weight</h1>
+                  <h1 class="align-middle">
+                     <span class="align-middle display-1 font-weight-bold" id="amount">@ViewBag.NetworkWeight @ViewBag.Chain.Symbol</span>
+                  </h1>
+               }
+
                <a asp-controller="BlockExplorer" asp-action="Index" class="btn-secondary-box"><i class="fa fa-cube"></i> Go to Block Explorer</a>
                @if (ViewBag.Features.Ticker)
                {

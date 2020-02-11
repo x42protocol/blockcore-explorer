@@ -13,5 +13,7 @@ namespace Blockcore.Explorer.Settings
       public bool About { get; set; } = true;
 
       public bool Footer { get; set; } = true;
+
+      public bool POSWeight { get; set; } = true;
    }
 }
