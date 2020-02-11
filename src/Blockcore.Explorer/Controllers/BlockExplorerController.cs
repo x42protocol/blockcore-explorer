@@ -36,7 +36,7 @@ namespace Blockcore.Explorer.Controllers
          else
          {
             stats = new Status { Error = "BlockchainStats not available yet." };
-            }
+         }
 
          this.indexService = indexService;
          this.settings = settings.Value;
@@ -124,10 +124,11 @@ namespace Blockcore.Explorer.Controllers
       {
          ViewBag.Features = settings.Features;
          ViewBag.Setup = settings.Setup;
+         ViewBag.Chain = chainSettings;
 
          ViewBag.BlockchainHeight = stats.SyncBlockIndex;
-
-         return View("Block", indexService.GetBlockByHash(hash));
+         BlockModel block = indexService.GetBlockByHash(hash);
+         return View("Block", block);
       }
 
       [HttpGet]
