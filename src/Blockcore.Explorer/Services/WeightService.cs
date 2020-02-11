@@ -41,8 +41,8 @@ namespace Blockcore.Explorer.Services
          if (!string.IsNullOrWhiteSpace(cachedStakingInfoResult))
          {
             var json = JObject.Parse(cachedStakingInfoResult);
-            JToken isStaking = json.SelectToken("staking");
-            if ((bool)isStaking)
+            JToken isEnabled = json.SelectToken("enabled");
+            if ((bool)isEnabled)
             {
                JToken networkWeightJSON = json.SelectToken("netStakeWeight");
                decimal networkWeight = Convert.ToDecimal(networkWeightJSON);
