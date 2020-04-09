@@ -264,6 +264,8 @@ global styles
 
 .center-heading {
     text-align: center;
+    display: inline-flex;
+    width: 100%;
 }
 
     .center-heading .section-title {
@@ -273,6 +275,7 @@ global styles
         color: #3B566E;
         letter-spacing: 1.30px;
         line-height: 40px;
+        margin: 0 auto;
         margin-bottom: 30px;
     }
 
@@ -519,6 +522,13 @@ buttons
 .app-download {
     display: inline-block;
     margin-right: 10px;
+}
+
+.next {
+    font-size: 30px;   
+}
+.previous {
+    font-size: 30px;  
 }
 
 /* 
