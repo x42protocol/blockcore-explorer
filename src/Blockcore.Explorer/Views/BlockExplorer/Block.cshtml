@@ -19,8 +19,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="center-heading">
+                    @if(@Model.PreviousBlockHash != null){
+                        <a class="previous" asp-controller="BlockExplorer" asp-action="BlockHash" asp-route-hash="@Model.PreviousBlockHash"><i class="fas fa-chevron-left"></i></a>
+                    }
+                    
                     <h2 class="section-title">Details for Block #@Model.BlockIndex</h2>
-                </div>
+                    @if(@Model.NextBlockHash != null){
+                     <a class="next" asp-controller="BlockExplorer" asp-action="BlockHash" asp-route-hash="@Model.NextBlockHash"><i class="fas fa-chevron-right"></i></a>
+                    }
+                </div>               
             </div>
         </div>
         <div class="row m-bottom-70">
