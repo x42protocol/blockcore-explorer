@@ -5,7 +5,6 @@ namespace Blockcore.Explorer.Settings
       public SetupSettings()
       {
          Title = "Blockcore Explorer";
-         DocumentationUrl = "/docs";
       }
 
       public string Title { get; set; }

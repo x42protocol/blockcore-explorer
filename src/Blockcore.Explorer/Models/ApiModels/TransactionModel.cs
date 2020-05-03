@@ -1,4 +1,4 @@
-﻿namespace Blockcore.Explorer.Models.ApiModels
+namespace Blockcore.Explorer.Models.ApiModels
 {
    public class TransactionModel
    {
@@ -12,7 +12,9 @@
 
       public string PubScriptHex { get; set; }
 
-      public string CoinBase { get; set; }
+      public bool CoinBase { get; set; }
+
+      public bool CoinStake { get; set; }
 
       public long Value { get; set; }
 

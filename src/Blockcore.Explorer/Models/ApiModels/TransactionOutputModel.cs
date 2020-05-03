@@ -1,4 +1,4 @@
-﻿namespace Blockcore.Explorer.Models.ApiModels
+namespace Blockcore.Explorer.Models.ApiModels
 {
    public class TransactionOutputModel
    {

@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.OpenApi.Models;
 
@@ -33,6 +34,7 @@ namespace Blockcore.Explorer
       public void ConfigureServices(IServiceCollection services)
       {
          services.Configure<ChainSettings>(Configuration.GetSection("Chain"));
+         services.Configure<NetworkSettings>(Configuration.GetSection("Network"));
          services.Configure<ExplorerSettings>(Configuration.GetSection("Explorer"));
          services.Configure<NetworkSettings>(Configuration.GetSection("Network"));
 
@@ -52,35 +54,35 @@ namespace Blockcore.Explorer
 
          services.AddLocalization();
 
-         services.AddSwaggerGen(
-             options =>
-             {
-                // TODO: Decide which version to use.
-                string assemblyVersion = typeof(Startup).Assembly.GetName().Version.ToString();
-                string fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
-                string productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+         //services.AddSwaggerGen(
+         //    options =>
+         //    {
+         //       // TODO: Decide which version to use.
+         //       string assemblyVersion = typeof(Startup).Assembly.GetName().Version.ToString();
+         //       string fileVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+         //       string productVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
 
-                options.SwaggerDoc("explorer", new OpenApiInfo { Description = "<a href=\"/block-explorer\">Back to Block Explorer...</a> ", Title = "Blockcore Explorer API", Version = fileVersion });
+         //       options.SwaggerDoc("explorer", new OpenApiInfo { Description = "<a href=\"/block-explorer\">Back to Block Explorer...</a> ", Title = "Blockcore Explorer API", Version = fileVersion });
 
-                // integrate xml comments
-                if (File.Exists(XmlCommentsFilePath))
-                {
-                  options.IncludeXmlComments(XmlCommentsFilePath);
-                }
+         //       // integrate xml comments
+         //       if (File.Exists(XmlCommentsFilePath))
+         //       {
+         //         options.IncludeXmlComments(XmlCommentsFilePath);
+         //       }
 
-                options.DescribeAllEnumsAsStrings();
+         //       options.DescribeAllEnumsAsStrings();
 
-                options.DescribeStringEnumsInCamelCase();
-             });
+         //       options.DescribeStringEnumsInCamelCase();
+         //    });
 
-         services.AddSwaggerGenNewtonsoftSupport();
+         //services.AddSwaggerGenNewtonsoftSupport();
 
-         services.AddCors(o => o.AddPolicy("ExplorerPolicy", builder =>
-         {
-            builder.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
-         }));
+         //services.AddCors(o => o.AddPolicy("ExplorerPolicy", builder =>
+         //{
+         //   builder.AllowAnyOrigin()
+         //             .AllowAnyMethod()
+         //             .AllowAnyHeader();
+         //}));
       }
 
       public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,9 +100,18 @@ namespace Blockcore.Explorer
 
          app.UseStaticFiles();
 
-         app.UseCors("ExplorerPolicy");
+         //app.UseCors("ExplorerPolicy");
 
          app.UseRouting();
+
+         // Set the API URL unless overridden
+         ExplorerSettings settings = app.ApplicationServices.GetService<IOptions<ExplorerSettings>>().Value;
+
+         if (string.IsNullOrWhiteSpace(settings.Setup.DocumentationUrl))
+         {
+            // Anyone who build and deploy their own forks of this, should simply specify the DocumentationUrl for their own API docs.
+            settings.Setup.DocumentationUrl = settings.Indexer.ApiUrl.Replace("/api", "/docs");
+         }
 
          // Add Culture Detection Support
          var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures).Where(x => !x.IsNeutralCulture).ToList();
@@ -135,26 +146,26 @@ namespace Blockcore.Explorer
             endpoints.MapRazorPages();
          });
 
-         app.UseSwagger(c =>
-         {
-            c.RouteTemplate = "docs/{documentName}/openapi.json";
-         });
+         //app.UseSwagger(c =>
+         //{
+         //   c.RouteTemplate = "docs/{documentName}/openapi.json";
+         //});
 
-         app.UseSwaggerUI(c =>
-         {
-            c.RoutePrefix = "docs";
-            c.SwaggerEndpoint("/docs/explorer/openapi.json", "Blockcore Explorer API");
-         });
+         //app.UseSwaggerUI(c =>
+         //{
+         //   c.RoutePrefix = "docs";
+         //   c.SwaggerEndpoint("/docs/explorer/openapi.json", "Blockcore Explorer API");
+         //});
       }
 
-      static string XmlCommentsFilePath
-      {
-         get
-         {
-            string basePath = PlatformServices.Default.Application.ApplicationBasePath;
-            string fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
-            return Path.Combine(basePath, fileName);
-         }
-      }
+      //static string XmlCommentsFilePath
+      //{
+      //   get
+      //   {
+      //      string basePath = PlatformServices.Default.Application.ApplicationBasePath;
+      //      string fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+      //      return Path.Combine(basePath, fileName);
+      //   }
+      //}
    }
 }

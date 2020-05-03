@@ -1,5 +1,8 @@
 using System;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using Blockcore.Explorer.Models;
 using Blockcore.Explorer.Services;
 using Blockcore.Explorer.Settings;
@@ -8,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using QRCoder;
 
 namespace Blockcore.Explorer.Controllers
 {
@@ -92,6 +96,21 @@ namespace Blockcore.Explorer.Controllers
          ViewBag.Chain = chainSettings;
 
          return View();
+      }
+
+      [Route("qr/{value}")]
+      public IActionResult Qr(string value)
+      {
+         ViewBag.Features = settings.Features;
+         ViewBag.Setup = settings.Setup;
+
+         var memoryStream = new MemoryStream();
+
+         QRCodeGenerator qrGenerator = new QRCodeGenerator();
+         QRCodeData qrCodeData = qrGenerator.CreateQrCode(value, QRCodeGenerator.ECCLevel.L);
+         var qrCode = new QRCode(qrCodeData);
+         qrCode.GetGraphic(20, Color.Black, Color.White, false).Save(memoryStream, ImageFormat.Png);
+         return File(memoryStream.ToArray(), "image/png");
       }
    }
 }
