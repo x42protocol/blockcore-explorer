@@ -30,6 +30,5 @@ docker build -t blockcoreexplorer .
 ```
 
 ```sh
-docker run -p 9901:9901 --name myexplorer blockcoreexplorer:latest
+docker run -p 9911:9911 --name myexplorer blockcoreexplorer:latest -e chain=CITY
 ```
-

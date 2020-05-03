@@ -10,7 +10,6 @@
    <meta name="Keywords" content="bitcoin,cryptos,cryptocurrencies,coins,$@ViewBag.Chain.Symbol,ticker,explorer,block explorer">
    <link rel="icon" type="image/png" href="/favicon">
    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-   <link href="~/lib/nprogress/nprogress.css" rel="stylesheet" type="text/css">
    <link href="~/css/all.css?v2" rel="stylesheet" type="text/css">
    <environment include="Development">
       <link href="~/css/default.css" rel="stylesheet" type="text/css">
@@ -22,92 +21,91 @@
    @RenderSection("Style", false)
 </head>
 <body>
-   <header class="header-area">
-      <div class="container">
-         <div class="row">
-            <div class="col-12">
-               <nav class="main-nav">
-                  <a asp-controller="Home" asp-action="Index" class="logo ">
-                     @if (!string.IsNullOrWhiteSpace(ViewBag.Chain.Icon))
-                     {
-                        <img src="@ViewBag.Chain.Icon" class="" alt="@ViewBag.Setup.Title" />
-                     }
-                     else
-                     {
-                        <img src="~/images/logo.png" class="" alt="@ViewBag.Setup.Title" />
-                     }
-                     <span class="text-white">@ViewBag.Setup.Title</span> <span class="text-info text-hide">v2</span>
+    <header class="header-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a asp-controller="Home" asp-action="Index" class="logo ">
+                            @if (!string.IsNullOrWhiteSpace(ViewBag.Chain.Icon))
+                            {
+                                <img src="@ViewBag.Chain.Icon" class="" alt="@ViewBag.Setup.Title" />
+                            }
+                            else
+                            {
+                                <img src="~/images/logo.png" class="" alt="@ViewBag.Setup.Title" />
+                            }
+                            <span class="text-white">@ViewBag.Setup.Title</span> <span class="text-info text-hide">v2</span>
 
-                  </a>
-                  <ul class="nav">
-                     @if (ViewBag.Features.Home)
-                     {
-                        <li class="@(Context.Request.Path.Equals(Url.Action("Index", "Home")) ? "active":"")"><a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> HOME</a></li>
-                     }
+                        </a>
+                        <ul class="nav">
+                           @if (ViewBag.Features.Home)
+                           {
+                              <li class="@(Context.Request.Path.Equals(Url.Action("Index", "Home")) ? "active":"")"><a asp-action="Index" asp-controller="Home"><i class="fa fa-home"></i> HOME</a></li>
+                           }
 
-                     @if (ViewBag.Features.Explorer)
-                     {
-                        <li class="@(Context.Request.Path.Equals(Url.Action("Index", "BlockExplorer")) ? "active":"")"><a asp-action="Index" asp-controller="BlockExplorer"><i class="fa fa-cube"></i> BLOCK EXPLORER</a></li>
-                     }
+                           @if (ViewBag.Features.Explorer)
+                           {
+                              <li class="@(Context.Request.Path.Equals(Url.Action("Index", "BlockExplorer")) ? "active":"")"><a asp-action="Index" asp-controller="BlockExplorer"><i class="fa fa-cube"></i> BLOCK EXPLORER</a></li>
+                           }
 
-                     @if (ViewBag.Features.API)
-                     {
-                        <li><a href="@ViewBag.Setup.DocumentationUrl"><i class="fa fa-book"></i> API</a></li>
-                     }
+                           @if (ViewBag.Features.Network)
+                           {
+                              <li class="@(Context.Request.Path.Equals(Url.Action("Index", "Network")) ? "active":"")"><a asp-action="Index" asp-controller="BlockExplorer"><i class="fas fa-project-diagram"></i> NETWORK</a></li>
+                           }
 
-                     @if (ViewBag.Features.About)
-                     {
-                        <li class="@(Context.Request.Path.Equals(Url.Action("About", "Home")) ? "active":"")"><a asp-action="About" asp-controller="Home"><i class="fa fa-info-circle"></i> ABOUT</a></li>
-                     }
-                  </ul>
-                  <a class='menu-trigger'>
-                     <span>Menu</span>
-                  </a>
-               </nav>
+                           @if (ViewBag.Features.API)
+                           {
+                              <li><a href="@ViewBag.Setup.DocumentationUrl"><i class="fa fa-book"></i> API</a></li>
+                           }
+
+                           @if (ViewBag.Features.About)
+                           {
+                              <li class="@(Context.Request.Path.Equals(Url.Action("About", "Home")) ? "active":"")"><a asp-action="About" asp-controller="Home"><i class="fa fa-info-circle"></i> ABOUT</a></li>
+                           }
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
             </div>
-         </div>
-      </div>
-   </header>
-   @RenderBody()
+        </div>
+    </header>
+    @RenderBody()
 
 
-   @if (ViewBag.Features.Footer)
-   {
-      @if (string.IsNullOrWhiteSpace(ViewBag.Setup.Footer))
-      {
-         <div id="crafted">
-            <p class="text-center small">Blockcore Explorer - <a href="https://www.blockcore.net/">www.blockcore.net</a></p>
-         </div>
-      }
-      else
-      {
-         <div id="crafted">
-            <p class="text-center small"><a href="@ViewBag.Setup.Footer">@ViewBag.Setup.Footer</a></p>
-         </div>
-      }
-   }
+    @if (ViewBag.Features.Footer)
+    {
+        @if (string.IsNullOrWhiteSpace(ViewBag.Setup.Footer))
+        {
+            <div id="crafted">
+                <p class="text-center small">Blockcore Explorer - <a href="https://www.blockcore.net/">www.blockcore.net</a></p>
+            </div>
+        }
+        else
+        {
+            <div id="crafted">
+                <p class="text-center small">@ViewBag.Setup.Footer</p>
+            </div>
+        }
+    }
 
-   <script src="~/js/jquery-2.1.0.min.js"></script>
-   <script src="~/js/popper.js"></script>
-   <script src="~/js/bootstrap.min.js"></script>
-   <script src="~/js/particles.min.js"></script>
-   <script src="~/js/scrollreveal.min.js"></script>
-   <script src="~/js/jquery.downCount.js"></script>
-   <script src="~/js/parallax.min.js"></script>
-   <script src="~/js/particle-green.js"></script>
-   <script src="~/lib/nprogress/nprogress.js"></script>
-   <environment include="Development">
-      <script src="~/js/default.js"></script>
-   </environment>
-   <environment exclude="Development">
-      <script src="~/js/default.min.js"></script>
-   </environment>
-   @RenderSection("Scripts", false)
-   <script type="text/javascript">
-      $(document).ready(function (e) {
-         NProgress.done();
-      });
-   </script>
+    <script src="~/js/jquery-2.1.0.min.js"></script>
+    <script src="~/js/popper.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/particles.min.js"></script>
+    <script src="~/js/scrollreveal.min.js"></script>
+    <script src="~/js/jquery.downCount.js"></script>
+    <script src="~/js/parallax.min.js"></script>
+    <script src="~/js/particle-green.js"></script>
+    <environment include="Development">
+        <script src="~/js/default.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="~/js/default.min.js"></script>
+    </environment>
+    @RenderSection("Scripts", false)
 </body>
 
 </html>

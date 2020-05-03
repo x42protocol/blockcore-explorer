@@ -27,7 +27,7 @@ namespace Blockcore.Explorer.Services
           TickerService tickerService,
           WeightService weightService,
           IMemoryCache memoryCache,
-          IOptions<ExplorerSettings> settings)
+          IOptions<ExplorerSettings> settings, IOptions<ChainSettings> chainSettings)
       {
          this.log = log;
          this.tickerService = tickerService;
@@ -35,10 +35,17 @@ namespace Blockcore.Explorer.Services
          this.blockIndexService = blockIndexService;
          this.memoryCache = memoryCache;
          this.settings = settings.Value;
+
+         this.log.LogInformation($"CHAIN SYMBOL: {chainSettings.Value.Symbol}");
       }
 
       public Task StartAsync(CancellationToken cancellationToken)
       {
+         if (settings.Features == null)
+         {
+            return Task.CompletedTask;
+         }
+
          if (settings.Features.Explorer)
          {
             try

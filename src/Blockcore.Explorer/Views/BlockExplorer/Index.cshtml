@@ -43,7 +43,7 @@
                         {
                            <tr>
                               <td><a asp-controller="BlockExplorer" asp-action="Block" asp-route-block="@block.BlockIndex">@block.BlockIndex</a></td>
-                              <td>@((DateTime.Now - DateTimeOffset.FromUnixTimeSeconds((long)block.BlockTime)).TotalMinutes.ToString("N0")) Minutes</td>
+                              <td><time since="@DateTime.Now">@block.BlockTime</time></td>
                               <td>@block.TransactionCount</td>
                               <td>@block.BlockSize bytes</td>
                               @*<td><a asp-controller="BlockExplorer" asp-action="BlockHash" asp-route-hash="@block.BlockHash">@block.BlockHash</a></td>*@

@@ -67,68 +67,68 @@ namespace Blockcore.Explorer.Controllers
          }
       }
 
-      [HttpGet]
-      [Route("address/{address}")]
-      public ActionResult<object> Address(string address)
-      {
-         try
-         {
-            var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/address/{address}/transactions");
-            var endpointRequest = new RestRequest(Method.GET);
-            endpointRequest.AddQueryParameter("api-version", "1.0");
-            log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
-            IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
-            return JsonConvert.DeserializeObject(endpointResponse.Content);
+      //[HttpGet]
+      //[Route("address/{address}")]
+      //public ActionResult<object> Address(string address)
+      //{
+      //   try
+      //   {
+      //      var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/address/{address}/transactions");
+      //      var endpointRequest = new RestRequest(Method.GET);
+      //      endpointRequest.AddQueryParameter("api-version", "1.0");
+      //      log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
+      //      IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
+      //      return JsonConvert.DeserializeObject(endpointResponse.Content);
 
-         }
-         catch (Exception ex)
-         {
-            log.LogError(ex, "Failed to get address.");
-         }
+      //   }
+      //   catch (Exception ex)
+      //   {
+      //      log.LogError(ex, "Failed to get address.");
+      //   }
 
-         return null;
-      }
+      //   return null;
+      //}
 
-      [HttpGet]
-      [Route("transaction/{transaction}")]
-      public ActionResult<object> Transaction(string transaction)
-      {
-         try
-         {
-            var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/transaction/{transaction}");
-            var endpointRequest = new RestRequest(Method.GET);
-            endpointRequest.AddQueryParameter("api-version", "1.0");
-            log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
-            IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
-            return JsonConvert.DeserializeObject(endpointResponse.Content);
-         }
-         catch (Exception ex)
-         {
-            log.LogError(ex, "Failed to get transaction.");
-         }
+      //[HttpGet]
+      //[Route("transaction/{transaction}")]
+      //public ActionResult<object> Transaction(string transaction)
+      //{
+      //   try
+      //   {
+      //      var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/transaction/{transaction}");
+      //      var endpointRequest = new RestRequest(Method.GET);
+      //      endpointRequest.AddQueryParameter("api-version", "1.0");
+      //      log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
+      //      IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
+      //      return JsonConvert.DeserializeObject(endpointResponse.Content);
+      //   }
+      //   catch (Exception ex)
+      //   {
+      //      log.LogError(ex, "Failed to get transaction.");
+      //   }
 
-         return null;
-      }
+      //   return null;
+      //}
 
-      [HttpGet]
-      [Route("block/{block}")]
-      public ActionResult<object> Block(string block)
-      {
-         try
-         {
-            var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/block/index/{block}/transactions");
-            var endpointRequest = new RestRequest(Method.GET);
-            endpointRequest.AddQueryParameter("api-version", "1.0");
-            log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
-            IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
-            return JsonConvert.DeserializeObject(endpointResponse.Content);
-         }
-         catch (Exception ex)
-         {
-            log.LogError(ex, "Failed to get block.");
-         }
+      //[HttpGet]
+      //[Route("block/{block}")]
+      //public ActionResult<object> Block(string block)
+      //{
+      //   try
+      //   {
+      //      var endpointClient = new RestClient($"{settings.Indexer.ApiUrl}query/block/index/{block}/transactions");
+      //      var endpointRequest = new RestRequest(Method.GET);
+      //      endpointRequest.AddQueryParameter("api-version", "1.0");
+      //      log.LogInformation($"Querying the indexer with URL: " + endpointRequest.ToString());
+      //      IRestResponse endpointResponse = endpointClient.Execute(endpointRequest);
+      //      return JsonConvert.DeserializeObject(endpointResponse.Content);
+      //   }
+      //   catch (Exception ex)
+      //   {
+      //      log.LogError(ex, "Failed to get block.");
+      //   }
 
-         return null;
-      }
+      //   return null;
+      //}
    }
 }

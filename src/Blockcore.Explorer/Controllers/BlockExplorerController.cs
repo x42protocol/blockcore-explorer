@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Blockcore.Explorer.Models;
 using Blockcore.Explorer.Models.ApiModels;
 using Blockcore.Explorer.Services;
@@ -159,6 +160,33 @@ namespace Blockcore.Explorer.Controllers
          if (trx != null && trx.TransactionId == null)
          {
             return RedirectToAction("BlockHash", new { hash = transactionId });
+         }
+
+         if (trx.IsCoinbase)
+         {
+            ViewBag.TransactionType = "Coinbase";
+         }
+         else if (trx.IsCoinstake && trx.Outputs.Exists(o => o.OutputType == "TX_PUBKEY"))
+         {
+            ViewBag.TransactionType = "Stake Reward";
+         }
+         // Make a prediction if this is a cold stake activation transaction or a cold stake reward.
+         else if (trx.IsCoinstake && trx.Outputs.Exists(o => o.OutputType == "TX_COLDSTAKE"))
+         {
+            ViewBag.TransactionType = "Cold Stake Reward";
+         }
+         else if (!trx.IsCoinstake && trx.Outputs.Exists(o => o.OutputType == "TX_COLDSTAKE"))
+         {
+            ViewBag.TransactionType = "Cold Stake Activation";
+         }
+         // This prediction can be greatly improved when we can parse the script of input, which should clearly show us this is cold stake rewards.
+         else if (!trx.IsCoinstake && !trx.IsCoinbase && trx.Outputs.Count == 1 && trx.Inputs.GroupBy(z => z.InputTransactionId).Any(z => z.Count() > 1))
+         {
+            ViewBag.transactionType = "Cold Stake Withdraw";
+         }
+         else
+         {
+            ViewBag.TransactionType = "Normal";
          }
 
          return View(trx);

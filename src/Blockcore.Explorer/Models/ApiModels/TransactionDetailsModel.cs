@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace Blockcore.Explorer.Models.ApiModels
 {
@@ -12,7 +13,7 @@ namespace Blockcore.Explorer.Models.ApiModels
          Outputs = new List<TransactionOutputModel>();
       }
 
-      public string CoinTag { get; set; }
+      public string Symbol { get; set; }
 
       public string BlockHash { get; set; }
 
@@ -24,6 +25,15 @@ namespace Blockcore.Explorer.Models.ApiModels
       public string TransactionId { get; set; }
 
       public int Confirmations { get; set; }
+
+      public bool IsCoinbase { get; set; }
+
+      public bool IsCoinstake { get; set; }
+
+      [JsonProperty(PropertyName = "rbf")]
+      public bool ReplaceByFee { get; set; }
+
+      public int Version { get; set; }
 
       public List<TransactionInputModel> Inputs { get; set; }
 

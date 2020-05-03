@@ -8,12 +8,14 @@ namespace Blockcore.Explorer.Settings
 
       public bool Explorer { get; set; } = true;
 
+      public bool Network { get; set; } = true;
+
       public bool API { get; set; } = true;
 
       public bool About { get; set; } = true;
 
       public bool Footer { get; set; } = true;
 
-      public bool POSWeight { get; set; } = true;
+      public bool POSWeight { get; set; } = false;
    }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Blockcore.Explorer.Models.ApiModels
 {
@@ -10,7 +10,7 @@ namespace Blockcore.Explorer.Models.ApiModels
          UnconfirmedTransactions = new List<TransactionModel>();
       }
 
-      public string CoinTag { get; set; }
+      public string Symbol { get; set; }
 
       public string Address { get; set; }
 
